@@ -6,6 +6,8 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update && apt-get install -y -f \
 	build-essential \
 	wget \
+	zip \
+	unzip \
 	scons \
 	rsync \
 	libboost-all-dev \
@@ -45,8 +47,8 @@ SHELL ["/bin/bash", "-c"]
 #RUN git clone https://github.com/StanfordASL/frank-wolfe-traffic.git
 COPY frank-wolfe-traffic frank-wolfe-traffic
 COPY traffic_gym traffic_gym
-RUN wget https://bucketbeam.s3-website-us-west-1.amazonaws.com/scratch.tar.gz
-RUN tar xzvf scratch.tar.gz
+RUN wget https://bucketbeam.s3-website-us-west-1.amazonaws.com/scratch.zip
+RUN unzip scratch.zip
 WORKDIR frank-wolfe-traffic/External
 
 RUN git clone https://github.com/RoutingKit/RoutingKit.git
