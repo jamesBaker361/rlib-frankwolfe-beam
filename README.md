@@ -7,9 +7,9 @@ contains the code for running Rlib experiments in the rlib folder
 The Dockerfile also pulls the data from https://bucketbeam.s3-website-us-west-1.amazonaws.com/scratch.zip
 which takes a while, so removing these lines in the Dockerfile
 
-'''
+```
 RUN wget https://bucketbeam.s3-website-us-west-1.amazonaws.com/scratch.zip
 RUN unzip scratch.zip
-'''
+```
 
 will make things faster
