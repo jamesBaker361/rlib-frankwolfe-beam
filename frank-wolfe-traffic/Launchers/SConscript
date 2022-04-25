@@ -1,0 +1,27 @@
+import subprocess
+
+_pylinks='python3-config --ldflags'
+pylinks=subprocess.run(_pylinks.split(' '), stdout=subprocess.PIPE).stdout.decode('utf-8').strip()
+_pyincludes= 'python3 -m pybind11 --includes'
+pyincludes=subprocess.run(_pyincludes.split(' '), stdout=subprocess.PIPE).stdout.decode('utf-8').strip()
+_pyconfigs='python3-config --extension-suffix'
+pyconfigs=subprocess.run(_pyconfigs.split(' '), stdout=subprocess.PIPE).stdout.decode('utf-8').strip()
+
+
+#c++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) example.cpp -o example$(python3-config --extension-suffix)
+
+p1 = Program(source=['AssignTraffic.cpp'], parse_flags='-DCSV_IO_NO_THREAD -fopenmp ', LIBS=['routingkit'])
+#p2 = Program(source=['RunP2PAlgo.cpp'], parse_flags='-DCSV_IO_NO_THREAD -fopenmp', LIBS=['routingkit'])
+
+Alias('AssignTraffic', p1)
+#Alias('RunP2PAlgo', p2)
+
+#Return('p1', 'p2')
+Return('p1')
+
+'''
+g++ -o example$(python3-config --extension-suffix) -std=c++14 -fopenmp -Werror -Wfatal-errors -Wpedantic -pedantic-errors -Wall -Wextra -Wno-missing-braces -Wno-unknown-pragmas -Wno-strict-overflow -Wno-sign-compare -O3 -shared -msse4 -fopenmp -DCSV_IO_NO_THREAD -fPIC $(python3 -m pybind11 --includes) $(python3-config --ldflags) -I. Launchers/AssignTraffic.cpp
+g++ -o Build/Devel/Launchers/AssignTraffic -fopenmp Build/Devel/Launchers/AssignTraffic.o -lroutingkit
+g++ -o Build/Devel/RawData/ConstraintTest.o -c -std=c++14 -fopenmp -Werror -Wfatal-errors -Wpedantic -pedantic-errors -Wall -Wextra -fopenmp -Wno-missing-braces -Wno-unknown-pragmas -Wno-strict-overflow -Wno-sign-compare -O3 -msse4 -I. RawData/ConstraintTest.cpp
+g++ -o Build/Devel/RawData/ConstraintTest Build/Devel/RawData/ConstraintTest.o
+'''
